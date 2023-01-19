@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stat;
@@ -120,7 +119,7 @@ public class PlayerTick {
 		}
 		DeadPlayerManager.removePlayerXpRecord(serverplayer);
 // TODO get working sound code from HarderFarther
-		level.playSound(null, serverplayer.blockPosition() , SoundEvents.NOTE_BLOCK_CHIME, SoundSource.AMBIENT, 0.5f, 0.5f);
+		level.playSound(null, serverplayer.blockPosition() , SoundEvents.ANVIL_LAND, SoundSource.AMBIENT, 0.5f, 0.25f);
 		serverplayer.resetStat(Stats.CUSTOM.get(Stats.DEATHS));
 		serverplayer.resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_DEATH));
 		serverplayer.resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_REST));

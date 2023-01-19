@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.mactso.hardcorecontrol.Main;
 
-import net.minecraft.world.level.GameRules;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

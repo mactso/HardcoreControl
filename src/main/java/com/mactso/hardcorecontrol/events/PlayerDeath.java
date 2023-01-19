@@ -1,13 +1,11 @@
 package com.mactso.hardcorecontrol.events;
 
-import java.util.Random;
-
 import com.mactso.hardcorecontrol.Main;
 import com.mactso.hardcorecontrol.config.MyConfig;
 
 import managers.DeadPlayerManager;
-import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -44,8 +42,8 @@ public class PlayerDeath {
 		}
 
 		Inventory inventory = sp.getInventory();
-		int z = inventory.getContainerSize();
-		Random rand = sp.level.getRandom();
+
+		RandomSource rand = sp.level.getRandom();
 		for (int i = 0; i < inventory.getContainerSize(); i++) {
 			System.out.println(i);
 			if (isArmorSlot(i)) {

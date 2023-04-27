@@ -105,20 +105,20 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 			public Common(ForgeConfigSpec.Builder builder)
 			{
 
-				ghostSeconds = builder.comment("how many seconds player will be a ghost 1 to 2 billion, default 600 seconds.")
-						.translation(Main.MODID + ".config." + "ghostSeconds").defineInRange("ghostSeconds", () -> 600, 1, Integer.MAX_VALUE);
+				ghostSeconds = builder.comment("how many seconds player will be a ghost 1 to 2 billion, default is 60 seconds.")
+						.translation(Main.MODID + ".config." + "ghostSeconds").defineInRange("ghostSeconds", () -> 60, 1, Integer.MAX_VALUE);
 
-				XpImmunityLevel = builder.comment("Xp level which provides immunity to hardcore death effects.  default is 49")
-						.translation(Main.MODID + ".config." + "XpImmunityLevel").defineInRange("XpImmunityLevel", () -> 49, 0, Integer.MAX_VALUE);
+				XpImmunityLevel = builder.comment("Xp level which provides immunity to hardcore death effects.  default is 30")
+						.translation(Main.MODID + ".config." + "XpImmunityLevel").defineInRange("XpImmunityLevel", () -> 30, 0, Integer.MAX_VALUE);
 				
-				inventoryLossOdds = builder.comment("Inventoryloss odds 0 to 100.  default is 60%")
+				inventoryLossOdds = builder.comment("Inventoryloss odds 0 to 100.  default is 66%")
 						.translation(Main.MODID + ".config." + "inventoryLossOdds ").defineInRange("inventoryLossOdds ", () -> 66, 0, 100);
 
-				armorLossOdds = builder.comment("Inventoryloss odds 0 to 100.  default is 50%")
-						.translation(Main.MODID + ".config." + "armorLossOdds").defineInRange("armorLossOdds", () -> 50, 0, 100);
+				armorLossOdds = builder.comment("Inventoryloss odds 0 to 100.  default is 33%")
+						.translation(Main.MODID + ".config." + "armorLossOdds").defineInRange("armorLossOdds", () -> 33, 0, 100);
 
-				hotbarLossOdds = builder.comment("Inventoryloss odds 0 to 100.  default is 60%")
-						.translation(Main.MODID + ".config." + "hotbarLossOdds").defineInRange("hotbarLossOdds", () -> 33, 0, 100);
+				hotbarLossOdds = builder.comment("Inventoryloss odds 0 to 100.  default is 25%")
+						.translation(Main.MODID + ".config." + "hotbarLossOdds").defineInRange("hotbarLossOdds", () -> 25, 0, 100);
 
 				
 			}

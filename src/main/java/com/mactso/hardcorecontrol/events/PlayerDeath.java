@@ -25,12 +25,6 @@ public class PlayerDeath {
 
 		ServerPlayer sp = (ServerPlayer) event.getEntity();
 
-		if (!sp.level.getServer().isHardcore()) {
-			return;
-		}
-
-		// TODO persist this to disk at some point.
-		
 		// save experience level when player died.
 		if (DeadPlayerManager.getExperienceRecord(sp) == null) {
 			DeadPlayerManager.addExperienceRecord(sp);

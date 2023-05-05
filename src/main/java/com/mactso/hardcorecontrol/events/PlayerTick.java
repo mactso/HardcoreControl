@@ -1,25 +1,25 @@
 package com.mactso.hardcorecontrol.events;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 import com.mactso.hardcorecontrol.Main;
 import com.mactso.hardcorecontrol.config.MyConfig;
+import com.mactso.hardcorecontrol.managers.DeadPlayerManager;
+import com.mactso.hardcorecontrol.timer.CapabilityDeathTime;
+import com.mactso.hardcorecontrol.timer.IDeathTime;
 import com.mactso.hardcorecontrol.util.Utility;
 
-import managers.DeadPlayerManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -33,7 +33,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class PlayerTick {
 
 	static UUID UUID_HARDCORECONTROLSPEED = UUID.fromString("ab570b50-f074-40c6-8389-b65e0fac65e9");
-	private static boolean spectatorSettingSaved = false;
+
 
 	@SubscribeEvent
 	public static void handlePlayerTick(PlayerTickEvent event) {
@@ -44,25 +44,27 @@ public class PlayerTick {
 
 		ServerPlayer serverplayer = (ServerPlayer) event.player;
 
-		int timeSinceDeathTicks = serverplayer.getStats().getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_DEATH));
-		int playtimeTicks = serverplayer.getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_TIME));
-
-		if (timeSinceDeathTicks == playtimeTicks) // edge case when a server starts this is less than ghostticksondeath
+		IDeathTime dt = serverplayer.getCapability(CapabilityDeathTime.DEATH_TIME).orElse(null);
+		if (dt == null) 
 			return;
 		
-		long ghostTicksOnDeath = MyConfig.getGhostTicksOnDeath();
+		
+		LocalDateTime deathTime = dt.getDeadTime();
+		if (deathTime == null) 
+			return;
+
+		LocalDateTime reviveTime = deathTime.plusSeconds(MyConfig.getGhostSeconds());
+
 		if (DeadPlayerManager.isExperienceRecord(serverplayer)) {
-			if (DeadPlayerManager.getExperienceValue(serverplayer) > MyConfig.getXpImmunityLevel()) {
-				ghostTicksOnDeath = 10;
+			if (DeadPlayerManager.getExperienceValue(serverplayer) >= MyConfig.getXpImmunityLevel()) {
+				reviveTime = deathTime.plusSeconds(1);
 			}
 		}
 		
-		if (timeSinceDeathTicks > ghostTicksOnDeath) {
-			return;
-		}
+		LocalDateTime currentTime = LocalDateTime.now(ZoneOffset.UTC);
 		
-		if (timeSinceDeathTicks < ghostTicksOnDeath) {
-			doPlayerGhostMode(serverplayer,  timeSinceDeathTicks, ghostTicksOnDeath);
+		if ((currentTime.isBefore(reviveTime))) {
+			doPlayerGhostMode(serverplayer,  currentTime, reviveTime);
 			return;
 		}  
 			
@@ -71,7 +73,7 @@ public class PlayerTick {
 	}
 
 	private static void doPlayerGhostMode(ServerPlayer serverplayer,
-			int ghostTicksCounter, long ghostTicksOnDeath) {
+			LocalDateTime currentTime, LocalDateTime reviveTime) {
 		serverplayer.setGameMode(GameType.SPECTATOR);
 
 		Level level = serverplayer.level;
@@ -87,18 +89,7 @@ public class PlayerTick {
 			spawnpos = new BlockPos(ld.getXSpawn(), ld.getYSpawn(),ld.getZSpawn());
 		}
 
-		GameRules rules = server.getGameRules();
-
-		// TODO add config / main startup to save default value for this rule.
-		
-		saveSpectatorSetting(rules);
-		
-		if ((ghostTicksCounter <10) && (!rules.getBoolean(GameRules.RULE_SPECTATORSGENERATECHUNKS))) {
-			rules.getRule(GameRules.RULE_SPECTATORSGENERATECHUNKS).set(true, server);
-		} else if ((ghostTicksCounter >10) && (rules.getBoolean(GameRules.RULE_SPECTATORSGENERATECHUNKS))) {
-			rules.getRule(GameRules.RULE_SPECTATORSGENERATECHUNKS).set(MyConfig.isDefaultSpectatorGenerateChunkSetting(), server);
-		}
-
+		HandleWorldTick.startSpectatorTime();
 
 		int distance = serverplayer.blockPosition().distManhattan(spawnpos) + 
 				Mth.abs( serverplayer.blockPosition().getY() - spawnpos.getY());
@@ -117,8 +108,12 @@ public class PlayerTick {
 			if (gametime%180 > 120) {
 				color = ChatFormatting.WHITE;
 			}
+
+			long secondsR = reviveTime.toEpochSecond(ZoneOffset.UTC);
+			long secondsC = currentTime.toEpochSecond(ZoneOffset.UTC);
+			long netSeconds = secondsR-secondsC;
 			Utility.sendClientMessage(serverplayer,
-					"You will be a ghost for " + calcDeathSeconds(ghostTicksOnDeath, ghostTicksCounter) + " more seconds.", color);
+					"You will be a ghost for " + netSeconds + " more seconds.", color);
 		}
 
 	}
@@ -129,6 +124,11 @@ public class PlayerTick {
 		MinecraftServer server = level.getServer();		
 
 		DeadPlayerManager.removePlayerXpRecord(serverplayer);
+		
+		IDeathTime dt = serverplayer.getCapability(CapabilityDeathTime.DEATH_TIME).orElse(null);
+		if (dt != null) {
+		    dt.setDeathTime(null);
+		}
 		
 		level.playSound(null, serverplayer.blockPosition() , SoundEvents.ANVIL_LAND, SoundSource.AMBIENT, 0.5f, 0.25f);
 
@@ -148,12 +148,6 @@ public class PlayerTick {
 		serverplayer.getStats().setValue(serverplayer, Stats.CUSTOM.get(Stats.TIME_SINCE_DEATH), playtime);
 	}
 
-	private static void saveSpectatorSetting(GameRules rules) {
-		if (!spectatorSettingSaved) {
-			MyConfig.setDefaultSpectatorGenerateChunkSetting(rules.getBoolean(GameRules.RULE_SPECTATORSGENERATECHUNKS));
-			spectatorSettingSaved = true;
-		}
-	}
 
 	static int calcDeathSeconds(long ghostTicksOnDeath, int deathTicks) {
 		return (int) ((ghostTicksOnDeath - deathTicks) / 20);

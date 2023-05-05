@@ -1,9 +1,14 @@
 package com.mactso.hardcorecontrol.events;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 import com.mactso.hardcorecontrol.Main;
 import com.mactso.hardcorecontrol.config.MyConfig;
+import com.mactso.hardcorecontrol.managers.DeadPlayerManager;
+import com.mactso.hardcorecontrol.timer.CapabilityDeathTime;
+import com.mactso.hardcorecontrol.timer.IDeathTime;
 
-import managers.DeadPlayerManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
@@ -30,6 +35,13 @@ public class PlayerDeath {
 			DeadPlayerManager.addExperienceRecord(sp);
 		}
 
+		
+		IDeathTime dt = sp.getCapability(CapabilityDeathTime.DEATH_TIME).orElse(null);
+		if (dt != null) {
+			LocalDateTime ldt = LocalDateTime.now(ZoneOffset.UTC);
+		    dt.setDeathTime(ldt);
+		}
+		
 		if ((MyConfig.getInventoryLossOdds() == 0) && (MyConfig.getArmorLossOdds() == 0)
 				&& (MyConfig.getHotbarLossOdds() == 0)) {
 			return;
@@ -39,21 +51,21 @@ public class PlayerDeath {
 
 		RandomSource rand = sp.level.getRandom();
 		for (int i = 0; i < inventory.getContainerSize(); i++) {
-			System.out.println(i);
+//			System.out.println(i);
 			if (isArmorSlot(i)) {
 				if (rand.nextInt(100) <= MyConfig.getArmorLossOdds()) {
-					System.out.println("Under armor odds: "+ MyConfig.getArmorLossOdds() +",removing slot " + i);
+//					System.out.println("Under armor odds: "+ MyConfig.getArmorLossOdds() +",removing slot " + i);
 					inventory.setItem(i, ItemStack.EMPTY);
 				}
 			} else if (isHotbarSlot(i)) {
 				if (rand.nextInt(100) <= MyConfig.getHotbarLossOdds()) {
-					System.out.println("Under hotbar odds: "+ MyConfig.getHotbarLossOdds() +",removing slot " + i);
+//					System.out.println("Under hotbar odds: "+ MyConfig.getHotbarLossOdds() +",removing slot " + i);
 					inventory.setItem(i, ItemStack.EMPTY);
 				}
 			} else {
 				if (rand.nextInt(100) <= MyConfig.getInventoryLossOdds()) {
-					System.out.println("Under generalinventory odds: "+ MyConfig.getInventoryLossOdds() +",removing slot " + i);
-					System.out.println("removing slot " + i);
+//					System.out.println("Under generalinventory odds: "+ MyConfig.getInventoryLossOdds() +",removing slot " + i);
+//					System.out.println("removing slot " + i);
 					inventory.setItem(i, ItemStack.EMPTY);
 				}
 			}

@@ -45,6 +45,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 			return XpImmunityLevel;
 		}
 		
+
 		public static int getInventoryLossOdds() {
 			return inventoryLossOdds;
 		}
@@ -57,10 +58,30 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 			return hotbarLossOdds;
 		}
 
-		
 		public static boolean isDefaultSpectatorGenerateChunkSetting() {
 			return defaultSpectatorGenerateChunkSetting;
 		}
+		
+		public static void setGhostSeconds(int ghostSeconds) {
+			MyConfig.ghostSeconds = ghostSeconds;
+		}
+
+		public static void setInventoryLossOdds(int inventoryLossOdds) {
+			MyConfig.inventoryLossOdds = inventoryLossOdds;
+		}
+
+		public static void setArmorLossOdds(int armorLossOdds) {
+			MyConfig.armorLossOdds = armorLossOdds;
+		}
+
+		public static void setHotbarLossOdds(int hotbarLossOdds) {
+			MyConfig.hotbarLossOdds = hotbarLossOdds;
+		}
+
+		public static void setXpImmunityLevel(int xpImmunityLevel) {
+			XpImmunityLevel = xpImmunityLevel;
+		}
+		
 
 		public static void setDefaultSpectatorGenerateChunkSetting(boolean defaultSpectatorGenerateChunkSetting) {
 			MyConfig.defaultSpectatorGenerateChunkSetting = defaultSpectatorGenerateChunkSetting;
@@ -98,7 +119,6 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 			public final IntValue inventoryLossOdds;
 			public final IntValue armorLossOdds;
 			public final IntValue hotbarLossOdds;
-
 			public final IntValue XpImmunityLevel;
 
 			
@@ -111,14 +131,14 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 				XpImmunityLevel = builder.comment("Xp level which provides immunity to hardcore death effects.  default is 30")
 						.translation(Main.MODID + ".config." + "XpImmunityLevel").defineInRange("XpImmunityLevel", () -> 30, 0, Integer.MAX_VALUE);
 				
-				inventoryLossOdds = builder.comment("Inventoryloss odds 0 to 100.  default is 66%")
-						.translation(Main.MODID + ".config." + "inventoryLossOdds ").defineInRange("inventoryLossOdds ", () -> 66, 0, 100);
+				inventoryLossOdds = builder.comment("Inventoryloss odds 0 to 100.  default is 33%")
+						.translation(Main.MODID + ".config." + "inventoryLossOdds ").defineInRange("inventoryLossOdds ", () -> 50, 0, 100);
 
-				armorLossOdds = builder.comment("Inventoryloss odds 0 to 100.  default is 33%")
-						.translation(Main.MODID + ".config." + "armorLossOdds").defineInRange("armorLossOdds", () -> 33, 0, 100);
+				armorLossOdds = builder.comment("Armor loss odds 0 to 100.  default is 25%")
+						.translation(Main.MODID + ".config." + "armorLossOdds").defineInRange("armorLossOdds", () -> 25, 0, 100);
 
-				hotbarLossOdds = builder.comment("Inventoryloss odds 0 to 100.  default is 25%")
-						.translation(Main.MODID + ".config." + "hotbarLossOdds").defineInRange("hotbarLossOdds", () -> 25, 0, 100);
+				hotbarLossOdds = builder.comment("Hotbar loss odds 0 to 100.  default is 15%")
+						.translation(Main.MODID + ".config." + "hotbarLossOdds").defineInRange("hotbarLossOdds", () -> 15, 0, 100);
 
 				
 			}

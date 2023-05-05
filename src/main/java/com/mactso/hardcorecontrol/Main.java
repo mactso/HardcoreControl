@@ -1,8 +1,10 @@
 package com.mactso.hardcorecontrol;
 
+import com.mactso.hardcorecontrol.commands.MyCommands;
 import com.mactso.hardcorecontrol.config.MyConfig;
+import com.mactso.hardcorecontrol.managers.DeadPlayerManager;
 
-import managers.DeadPlayerManager;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.IExtensionPoint.DisplayTest;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -37,6 +39,17 @@ public class Main {
 	            LOGGER.info("Hardcore Control starting");
 	            DeadPlayerManager.init();
 	        }
+	    }
+	    
+	    @Mod.EventBusSubscriber()
+	    public static class ForgeEvents
+	    {
+			@SubscribeEvent 		
+			public static void onCommandsRegistry(final RegisterCommandsEvent event) {
+				System.out.println("Happy Trails: Registering Command Dispatcher");
+				MyCommands.register(event.getDispatcher());			
+			}
+
 	    }
 
 }

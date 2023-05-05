@@ -16,26 +16,24 @@ public class MyCommands {
 	String value = "";
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher.register(Commands.literal(Main.MODID)  
-		.then(Commands.literal("info")
-				.then(Commands.literal("info").executes(ctx -> {
-					ServerPlayer p = ctx.getSource().getPlayerOrException();
-					doInfoReport(p);
-					return 1;
-				}))));
+		dispatcher.register(Commands.literal("hardcorecontrol").requires((source) -> {
+			return source.hasPermission(0);
+		}).then(Commands.literal("info").executes(ctx -> {
+			ServerPlayer p = ctx.getSource().getPlayerOrException();
+			doInfoReport(p);
+			return 1;
+		})));
 
 	}
 
 	private static void doInfoReport(ServerPlayer p) {
-		String chatMessage = "  Harecore Control Info Report";  
+		String chatMessage = "Hardcore Control Info Report";
 		Utility.sendChat((Player) p, chatMessage, ChatFormatting.GREEN);
-		chatMessage = 
-				  "\n  Ghost Seconds ...........................: " + MyConfig.getGhostSeconds()
-				+ "\n  Immunity XP ...........................: " + MyConfig.getXpImmunityLevel()
-				+ "\n  Armor Loss Odds...............: " + MyConfig.getArmorLossOdds()
-				+ "\n  Inventory Loss Odds......: " + MyConfig.getInventoryLossOdds()
-				+ "\n  HotBar Loss Odds...... " + MyConfig.getHotbarLossOdds()
-				;
+		chatMessage = "\n  Ghost Seconds ....................: " + MyConfig.getGhostSeconds() + " seconds."
+				+ "\n  Immunity XP .............................: " + MyConfig.getXpImmunityLevel() + " levels."
+				+ "\n  Armor Loss Odds................: " + MyConfig.getArmorLossOdds() + " %."
+				+ "\n  Inventory Loss Odds......: " + MyConfig.getInventoryLossOdds() + " %."
+				+ "\n  HotBar Loss Odds..............: "	+ MyConfig.getHotbarLossOdds() + " %.";
 		Utility.sendChat((Player) p, chatMessage, ChatFormatting.AQUA);
 	}
 

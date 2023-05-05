@@ -1,4 +1,4 @@
-package managers;
+package com.mactso.hardcorecontrol.managers;
 
 import java.util.ArrayList;
 import java.util.List;

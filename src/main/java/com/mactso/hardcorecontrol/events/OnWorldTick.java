@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @Mod.EventBusSubscriber(bus = Bus.FORGE, modid = Main.MODID)
-public class HandleWorldTick {
+public class OnWorldTick {
 
 	private static int spectatorTime = 0;
 	private static boolean spectatorSettingSaved = false;

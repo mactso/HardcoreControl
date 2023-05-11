@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Bus.FORGE)
-public class PlayerDeath {
+public class OnPlayerDeath {
 
 	@SubscribeEvent
 	public static void onPlayerDeath(LivingDeathEvent event) {
@@ -46,6 +46,10 @@ public class PlayerDeath {
 				&& (MyConfig.getHotbarLossOdds() == 0)) {
 			return;
 		}
+		
+		if (DeadPlayerManager.getExperienceValue(sp) >= MyConfig.getXpImmunityLevel()) {
+			return;
+		}
 
 		Inventory inventory = sp.getInventory();
 
@@ -57,27 +61,27 @@ public class PlayerDeath {
 //					System.out.println("Under armor odds: "+ MyConfig.getArmorLossOdds() +",removing slot " + i);
 					inventory.setItem(i, ItemStack.EMPTY);
 				}
-			} else if (isHotbarSlot(i)) {
+			} else if (isShieldSlot(i)) {
+				if (rand.nextInt(100) <= MyConfig.getArmorLossOdds()) {
+//					System.out.println("Under shield odds: "+ MyConfig.getArmorLossOdds() +",removing slot " + i);
+					inventory.setItem(i, ItemStack.EMPTY);
+				}
+			} else if (Inventory.isHotbarSlot(i)) {
 				if (rand.nextInt(100) <= MyConfig.getHotbarLossOdds()) {
 //					System.out.println("Under hotbar odds: "+ MyConfig.getHotbarLossOdds() +",removing slot " + i);
 					inventory.setItem(i, ItemStack.EMPTY);
 				}
-			} else {
+			}
+			else if (isNonHotBarSlot(i))  {
 				if (rand.nextInt(100) <= MyConfig.getInventoryLossOdds()) {
 //					System.out.println("Under generalinventory odds: "+ MyConfig.getInventoryLossOdds() +",removing slot " + i);
 //					System.out.println("removing slot " + i);
 					inventory.setItem(i, ItemStack.EMPTY);
 				}
+			} else {
+				
 			}
 		}
-	}
-
-	// replace inventory.isHotbarSlot so code will be symmetrical visually
-	private static boolean isHotbarSlot(int i) {
-		if ((i >= 0) && (i <= 9)) {
-			return true;
-		}
-		return false;
 	}
 
 	private static boolean isArmorSlot(int i) {
@@ -87,4 +91,18 @@ public class PlayerDeath {
 		return false;
 	}
 
+	private static boolean isShieldSlot(int i) {
+		if (i == Inventory.SLOT_OFFHAND) {
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean isNonHotBarSlot(int i) {
+		if ((i >= 9) && (i <= 35)) {
+			return true;
+		}
+		return false;
+	}
+	
 }

@@ -22,13 +22,18 @@ public class OnPlayerCloned {
 			return;
 		}
 	
-    	ServerPlayer newPlayer = (ServerPlayer) event.getEntity();
-    	ServerPlayer oldPlayer = (ServerPlayer) event.getOriginal();
-    	oldPlayer.reviveCaps();
-    	IDeathTime capNew = newPlayer.getCapability(CapabilityDeathTime.DEATH_TIME).orElse(null);
-    	IDeathTime capOld = oldPlayer.getCapability(CapabilityDeathTime.DEATH_TIME).orElse(null);
-    	LocalDateTime ldt = capOld.getDeadTime();
-    	capNew.setDeathTime(ldt);
-    	oldPlayer.invalidateCaps();
+		if (!event.isWasDeath()) {
+			return;
+		}
+
+		ServerPlayer newPlayer = (ServerPlayer) event.getEntity();
+		ServerPlayer oldPlayer = (ServerPlayer) event.getOriginal();
+		oldPlayer.reviveCaps();
+		IDeathTime capNew = newPlayer.getCapability(CapabilityDeathTime.DEATH_TIME).orElse(null);
+		IDeathTime capOld = oldPlayer.getCapability(CapabilityDeathTime.DEATH_TIME).orElse(null);
+		LocalDateTime ldt = capOld.getDeadTime();
+		capNew.setDeathTime(ldt);
+		oldPlayer.invalidateCaps();
+
     }
 }

@@ -132,7 +132,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 						.translation(Main.MODID + ".config." + "XpImmunityLevel").defineInRange("XpImmunityLevel", () -> 30, 0, Integer.MAX_VALUE);
 				
 				inventoryLossOdds = builder.comment("Inventoryloss odds 0 to 100.  default is 33%")
-						.translation(Main.MODID + ".config." + "inventoryLossOdds ").defineInRange("inventoryLossOdds ", () -> 50, 0, 100);
+						.translation(Main.MODID + ".config." + "inventoryLossOdds ").defineInRange("inventoryLossOdds ", () -> 33, 0, 100);
 
 				armorLossOdds = builder.comment("Armor loss odds 0 to 100.  default is 25%")
 						.translation(Main.MODID + ".config." + "armorLossOdds").defineInRange("armorLossOdds", () -> 25, 0, 100);

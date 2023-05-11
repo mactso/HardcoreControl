@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Bus.FORGE)
-public class HandleAttachCapabilities {
+public class OnAttachCapabilities {
 	private static final ResourceLocation KEY = new ResourceLocation(Main.MODID, "deadtime_capability");
 
 	 @SubscribeEvent

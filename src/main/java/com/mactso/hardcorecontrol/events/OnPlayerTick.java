@@ -17,6 +17,7 @@ import com.mactso.hardcorecontrol.timer.IDeathTime;
 import com.mactso.hardcorecontrol.util.Utility;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.telemetry.TelemetryProperty.GameMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -78,6 +79,9 @@ public class OnPlayerTick {
 
 		LocalDateTime currentTime = LocalDateTime.now(ZoneOffset.UTC);
 
+		if (serverplayer.gameMode.getGameModeForPlayer() == GameType.CREATIVE ) {
+			reviveTime = currentTime;
+		}
 		
 		if ((currentTime.isBefore(reviveTime))) {
 			doPlayerGhostMode(serverplayer,  currentTime, reviveTime);
@@ -90,9 +94,10 @@ public class OnPlayerTick {
 
 	private static void doPlayerGhostMode(ServerPlayer serverplayer,
 			LocalDateTime currentTime, LocalDateTime reviveTime) {
+		
 		serverplayer.setGameMode(GameType.SPECTATOR);
 
-		Level level = serverplayer.level;
+		Level level = serverplayer.level();
 		MinecraftServer server = level.getServer();		
         ServerLevel serverlevel = server.getLevel(serverplayer.getRespawnDimension());
 		long gametime = level.getGameTime();
@@ -132,7 +137,7 @@ public class OnPlayerTick {
 
 	private static void doPlayerRevive(ServerPlayer serverplayer) {
 
-		Level level = serverplayer.level;
+		Level level = serverplayer.level();
 		MinecraftServer server = level.getServer();	
 		
 		if (actualRespawnPos.containsKey(serverplayer) ) {

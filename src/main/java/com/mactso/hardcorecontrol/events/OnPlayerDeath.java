@@ -53,7 +53,7 @@ public class OnPlayerDeath {
 
 		Inventory inventory = sp.getInventory();
 
-		RandomSource rand = sp.level.getRandom();
+		RandomSource rand = sp.level().getRandom();
 		for (int i = 0; i < inventory.getContainerSize(); i++) {
 //			System.out.println(i);
 			if (isArmorSlot(i)) {

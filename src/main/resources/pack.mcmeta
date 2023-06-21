@@ -1,6 +1,8 @@
 {
-    "pack": {
-        "description": "fix Experience Bug resources",
-        "pack_format": 8
-    }
+  "pack": {
+    "description": {
+      "text": "mod resources"
+    },
+    "pack_format": 15
+  }
 }

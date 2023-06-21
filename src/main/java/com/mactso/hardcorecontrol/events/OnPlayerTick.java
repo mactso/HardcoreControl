@@ -78,6 +78,9 @@ public class OnPlayerTick {
 
 		LocalDateTime currentTime = LocalDateTime.now(ZoneOffset.UTC);
 
+		if (serverplayer.gameMode.getGameModeForPlayer() == GameType.CREATIVE) {
+			reviveTime = currentTime;
+		}
 		
 		if ((currentTime.isBefore(reviveTime))) {
 			doPlayerGhostMode(serverplayer,  currentTime, reviveTime);

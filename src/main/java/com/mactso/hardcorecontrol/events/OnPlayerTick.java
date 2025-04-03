@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.mactso.hardcorecontrol.Main;
 import com.mactso.hardcorecontrol.config.MyConfig;
 import com.mactso.hardcorecontrol.managers.DeadPlayerManager;
@@ -17,20 +14,14 @@ import com.mactso.hardcorecontrol.timer.IDeathTime;
 import com.mactso.hardcorecontrol.util.Utility;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.telemetry.TelemetryProperty.GameMode;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.RespawnAnchorBlock;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
-import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

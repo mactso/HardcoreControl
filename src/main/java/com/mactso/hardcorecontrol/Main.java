@@ -1,19 +1,18 @@
 package com.mactso.hardcorecontrol;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.mactso.hardcorecontrol.commands.MyCommands;
 import com.mactso.hardcorecontrol.config.MyConfig;
 import com.mactso.hardcorecontrol.managers.DeadPlayerManager;
 
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.IExtensionPoint.DisplayTest;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.network.NetworkConstants;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 
 @Mod("hardcorecontrol")
@@ -24,8 +23,6 @@ public class Main {
 	    
 	    public Main()
 	    {
-			ModLoadingContext.get().registerExtensionPoint(DisplayTest.class,
-					() -> new DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
 	    	System.out.println(MODID + ": Registering Mod.");
  	        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON,MyConfig.COMMON_SPEC );
  	        

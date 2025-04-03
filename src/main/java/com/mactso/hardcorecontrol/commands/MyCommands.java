@@ -1,6 +1,5 @@
 package com.mactso.hardcorecontrol.commands;
 
-import com.mactso.hardcorecontrol.Main;
 import com.mactso.hardcorecontrol.config.MyConfig;
 import com.mactso.hardcorecontrol.util.Utility;
 import com.mojang.brigadier.CommandDispatcher;
@@ -26,15 +25,25 @@ public class MyCommands {
 
 	}
 
-	private static void doInfoReport(ServerPlayer p) {
+	public static void doInfoReport(ServerPlayer p) {
+
 		String chatMessage = "Hardcore Control Info Report";
 		Utility.sendChat((Player) p, chatMessage, ChatFormatting.GREEN);
+
 		chatMessage = "\n  Ghost Seconds ....................: " + MyConfig.getGhostSeconds() + " seconds."
 				+ "\n  Immunity XP .............................: " + MyConfig.getXpImmunityLevel() + " levels."
-				+ "\n  Armor Loss Odds................: " + MyConfig.getArmorLossOdds() + " %."
-				+ "\n  Inventory Loss Odds......: " + MyConfig.getInventoryLossOdds() + " %."
-				+ "\n  HotBar Loss Odds..............: "	+ MyConfig.getHotbarLossOdds() + " %.";
+				+ "\n  Armor Loss Odds................: " + formatLossOdds(MyConfig.getArmorLossOdds()) 
+				+ "\n  Inventory Loss Odds......: " + formatLossOdds(MyConfig.getInventoryLossOdds()) 
+				+ "\n  HotBar Loss Odds..............: " + formatLossOdds(MyConfig.getHotbarLossOdds());
 		Utility.sendChat((Player) p, chatMessage, ChatFormatting.AQUA);
+	}
+
+	private static String formatLossOdds(int odds) {
+		String s = "Keep Inventory on Death.";
+		if ((odds) >= 0) {
+			s = ""+odds+ " %.";
+		}
+		return s;
 	}
 
 }

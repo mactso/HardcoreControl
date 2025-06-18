@@ -4,24 +4,16 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import com.mactso.hardcorecontrol.Main;
-import com.mactso.hardcorecontrol.commands.MyCommands;
 import com.mactso.hardcorecontrol.config.MyConfig;
 import com.mactso.hardcorecontrol.managers.DeadPlayerManager;
 import com.mactso.hardcorecontrol.timer.CapabilityDeathTime;
 import com.mactso.hardcorecontrol.timer.IDeathTime;
-import com.mactso.hardcorecontrol.util.Utility;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.GameRules.BooleanValue;
-import net.minecraft.world.level.GameRules.Key;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -31,7 +23,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class OnPlayerDeath {
 
 	@SubscribeEvent
-	public void onPlayerDeath(PlayerEvent.Clone event) {
+	public static void onPlayerDeath(PlayerEvent.Clone event) {
 
 
 		if (!(event.getEntity() instanceof ServerPlayer)) {

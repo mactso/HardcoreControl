@@ -15,7 +15,6 @@ import com.mactso.hardcorecontrol.util.Utility;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -89,8 +88,11 @@ public class OnPlayerTick {
 		serverplayer.setGameMode(GameType.SPECTATOR);
 
 		Level level = serverplayer.level();
-		MinecraftServer server = level.getServer();		
-        ServerLevel serverlevel = server.getLevel(serverplayer.getRespawnDimension());
+		
+		// MinecraftServer server = level.getServer();		
+		// old        ServerLevel serverlevel = server.getLevel(serverplayer.getRespawnDimension());
+        // new but never used.       ServerLevel serverlevel = serverplayer.server.getLevel(serverplayer.getRespawnConfig().dimension());
+		
 		long gametime = level.getGameTime();
 
 		if (!actualRespawnPos.containsKey(serverplayer) ) {

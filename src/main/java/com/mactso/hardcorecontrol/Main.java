@@ -6,13 +6,14 @@ import org.apache.logging.log4j.Logger;
 import com.mactso.hardcorecontrol.commands.MyCommands;
 import com.mactso.hardcorecontrol.config.MyConfig;
 import com.mactso.hardcorecontrol.managers.DeadPlayerManager;
+import com.mactso.hardcorecontrol.util.Utility;
 
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 
 @Mod("hardcorecontrol")
@@ -21,11 +22,10 @@ public class Main {
 	    public static final String MODID = "hardcorecontrol"; 
 	    private static final Logger LOGGER = LogManager.getLogger();
 	    
-	    public Main()
-	    {
-	    	System.out.println(MODID + ": Registering Mod.");
- 	        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON,MyConfig.COMMON_SPEC );
- 	        
+		public Main(FMLJavaModLoadingContext context) {
+			context.getModEventBus().register(this);
+			context.registerConfig(ModConfig.Type.COMMON, MyConfig.COMMON_SPEC);
+			Utility.debugMsg(0, MODID + ": Registering Mod"); 	        
 	    }
 	    
 	    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)

@@ -33,6 +33,11 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 		public static int hotbarLossOdds; // odds a given piece of equipment will be lost
 		public static int XpImmunityLevel; // xp level where the death will not be "hardcore"		
 		public static boolean defaultSpectatorGenerateChunkSetting;
+		public static int debugLevel = 0;
+		
+		public static int getDebugLevel() {
+			return debugLevel;
+		}
 		
 		public static int getGhostSeconds() {
 			return ghostSeconds;
@@ -145,6 +150,12 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 			}
 
 		}
+
+
+
+
+
+
 	
 	}
 

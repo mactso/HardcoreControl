@@ -1,6 +1,7 @@
 package com.mactso.hardcorecontrol.timer;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup.Provider;
@@ -50,9 +51,11 @@ public CompoundTag serializeNBT(Provider registryAccess) {
 	public void deserializeNBT(Provider registryAccess, CompoundTag nbt) {
 
 		LocalDateTime ldt = null;
-		String s = nbt.getString("deathTimeStored");
+		Optional<String> s = nbt.getString("deathTimeStored");
 		if (!s.isEmpty()) {
-			ldt = LocalDateTime.parse(nbt.getString("deathTimeStored"));
+			String ldtString = s.get().toString();
+			// TODO: Debug that this is correct.
+			ldt = LocalDateTime.parse(ldtString);
 		}
 		storage.setDeathTime(ldt);
 		

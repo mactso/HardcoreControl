@@ -8,7 +8,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 public class MyCommands {
 	String subcommand = "";
@@ -28,14 +27,14 @@ public class MyCommands {
 	public static void doInfoReport(ServerPlayer p) {
 
 		String chatMessage = "Hardcore Control Info Report";
-		Utility.sendChat((Player) p, chatMessage, ChatFormatting.GREEN);
+		Utility.sendChat( p, chatMessage, ChatFormatting.GREEN);
 
 		chatMessage = "\n  Ghost Seconds ....................: " + MyConfig.getGhostSeconds() + " seconds."
 				+ "\n  Immunity XP .............................: " + MyConfig.getXpImmunityLevel() + " levels."
 				+ "\n  Armor Loss Odds................: " + formatLossOdds(MyConfig.getArmorLossOdds()) 
 				+ "\n  Inventory Loss Odds......: " + formatLossOdds(MyConfig.getInventoryLossOdds()) 
 				+ "\n  HotBar Loss Odds..............: " + formatLossOdds(MyConfig.getHotbarLossOdds());
-		Utility.sendChat((Player) p, chatMessage, ChatFormatting.AQUA);
+		Utility.sendChat( p, chatMessage, ChatFormatting.AQUA);
 	}
 
 	private static String formatLossOdds(int odds) {
